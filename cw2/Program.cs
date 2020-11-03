@@ -6,7 +6,18 @@ namespace cw2
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var log = new ErrorLogger();
+
+            try
+            {
+                var i = args[0];
+            }
+            catch (Exception ex)
+            {
+                log.Add(ex);
+            }
+
+            Console.WriteLine("End!");
         }
     }
 }
