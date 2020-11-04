@@ -13,6 +13,7 @@ namespace cw2
         public ErrorLogger()
         {
             writer = new Writer(path, false);
+            Start();
         }
 
         ErrorLogger(string path) : base()
@@ -20,9 +21,29 @@ namespace cw2
             this.path = path;
         }
 
-        public void Add(Exception ex)
+        public void Add(Exception exception)
         {
-            writer.WriteLine($"{DateTime.Now}: {ex};");
+            Write($"ERROR:\t{exception}");
+        }
+
+        public void Add(String log)
+        {
+            Write($"LOG:\t\t{log}");
+        }
+
+        void Start()
+        {
+            Add("Program started.");
+        }
+
+        void Write(string message)
+        {
+            writer.WriteLine($"{DateTime.Now}: {message}");
+        }
+
+        public void Stop()
+        {
+            Add("Program stopped.\n--------------------\n");
         }
     }
 }

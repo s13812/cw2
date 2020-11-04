@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace cw2
 {
@@ -8,16 +9,35 @@ namespace cw2
         {
             var log = new ErrorLogger();
 
+            var sourcePath = @"data.csv";
+            var resultPath = @"result.xml";
+            var resultType = "xml";
+
             try
             {
-                var i = args[0];
+                sourcePath = args[0];
+                resultPath = args[1];
+                resultType = args[2];
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                log.Add(ex);
+                log.Add(new ArgumentException("Missing argumets, defult values will be used."));
             }
 
-            Console.WriteLine("End!");
+            if (File.Exists(sourcePath))
+            {
+                log.Add($"Source: '{sourcePath}'.");
+                log.Add($"Result: '{resultPath}'.");
+                log.Add($"Data type: '{resultType}'.");                
+
+
+            }
+            else
+            {
+                log.Add(new FileNotFoundException($"'{sourcePath}' does not exist, nothing to do."));
+            }
+
+            log.Stop();
         }
     }
 }
