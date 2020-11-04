@@ -21,7 +21,7 @@ namespace cw2
             }
             catch (Exception)
             {
-                log.Add(new ArgumentException("Missing argumets, defult values will be used."));
+                log.Add(new ArgumentException("Missing argumets, default values will be used."));
             }
 
             if (File.Exists(sourcePath))
