@@ -22,11 +22,11 @@ namespace cw2
     {
         readonly bool overwriteMode = true;
 
-        public Writer(string path) : base(path)
-        {
-        }
+        //public Writer(string path) : base(path)
+        //{
+        //}
 
-        public Writer(string path, bool overwriteMode) : base(path)
+        public Writer(string path, bool overwriteMode = true) : base(path)
         {
             this.overwriteMode = overwriteMode;
         }

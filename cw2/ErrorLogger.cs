@@ -28,7 +28,7 @@ namespace cw2
 
         public void Add(String log)
         {
-            Write($"LOG:\t\t{log}");
+            Write($"LOG:\t{log}");
         }
 
         void Start()
