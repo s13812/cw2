@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text.Json;
+using System.Xml.Serialization;
 using cw2.models;
 
 namespace cw2
@@ -32,8 +35,8 @@ namespace cw2
                 log.Add($"Result: '{resultPath}'.");
                 log.Add($"Data type: '{resultType}'.");
 
-                //List<Student> students = new List<Student>();
                 Dictionary<string, Student> students = new Dictionary<string, Student>();
+                Dictionary<string, int> studies = new Dictionary<string, int>();
 
                 using (var stream = new StreamReader(sourcePath))
                 {
@@ -62,8 +65,17 @@ namespace cw2
                             try
                             {
                                 students.Add(st.GetKey(), st);
+                                var study = st.studies.name;
+                                if (studies.ContainsKey(study))
+                                {
+                                    studies[study]++;
+                                }
+                                else
+                                {
+                                    studies.Add(study, 1);
+                                }
                             }
-                            catch (ArgumentException ex)
+                            catch (ArgumentException)
                             {
 
                             }
@@ -74,13 +86,40 @@ namespace cw2
                         }
                         lineNo++;
                     }
-                }
+                }                               
 
-                foreach (Student s in students.Values)
+                Uczelnia uczelnia = new Uczelnia
                 {
-                    Console.WriteLine(s);
+                    createdAt = DateTime.Today.ToShortDateString(),
+                    author = "Michal Razowski",
+                    studenci = students.Values.ToList(),
+                    activeStudies = new List<ActiveStudy>()
+                };
+
+                foreach (var s in studies)
+                {
+                    uczelnia.activeStudies.Add(new ActiveStudy
+                    {
+                        name = s.Key,
+                        numberOfStudents = s.Value
+                    });
                 }
 
+                if (resultType.ToLower().Equals("xml"))
+                {
+                    FileStream writer = new FileStream(resultPath, FileMode.Create);
+                    XmlSerializer serializer = new XmlSerializer(typeof(Uczelnia), new XmlRootAttribute("uczelnia"));
+                    serializer.Serialize(writer, uczelnia);
+                } 
+                else if (resultType.ToLower().Equals("json"))
+                {
+                    var jsonString = JsonSerializer.Serialize(uczelnia);
+                    File.WriteAllText(resultPath, jsonString);
+                }
+                else
+                {
+                    log.Add(new ArgumentException($"'{resultType}' is not a correct output type."));
+                }
             }
             else
             {

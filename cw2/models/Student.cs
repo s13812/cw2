@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace cw2.models
 {
     [Serializable]
+    [XmlType(TypeName = "student")]
     public class Student
     {
         [XmlAttribute]

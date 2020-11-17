@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "cw2": {
+      "commandName": "Project",
+      "commandLineArgs": "dane.csv result.json json"
+    }
+  }
+}
